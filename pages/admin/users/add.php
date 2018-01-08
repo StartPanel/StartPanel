@@ -22,7 +22,7 @@
         if (!(preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/', $_POST['password']))) {
            $error = "Password must have 8 characters minimum, one upper case letter, one lower case letter, and one digit.";
         } else {
-            $user->setValue($_SESSION['id'], 'password', $_POST['password']);
+            $user->setValue($_SESSION['id'], 'password', password_hash($_POST['password'], PASSWORD_DEFAULT));
         }
         $isAdmin = "0";
         if ($_POST['isAdmin'] == "true") {
