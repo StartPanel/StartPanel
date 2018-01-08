@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `servers` (
   `ip` text,
   `port` text,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `settings` (
