@@ -22,7 +22,7 @@
     include ROOT_PATH . '/pages/include/navbar.php';
 ?>
 <div class="container">
-    
+
     <div class="d-flex justify-content-between">
         <div><h1>Console <small><?php echo $server->getName($_GET['id']); ?></small></h1></div>
         <div>
@@ -50,7 +50,7 @@
                     display: block;
                     width: 100%;
                     height: 400px;
-                    padding: 4px; 
+                    padding: 4px;
                     border-radius: 3px;
                     overflow: auto;
                     overflow-x: hidden !important;
@@ -113,7 +113,7 @@
         });
     }
     commandSubmit.addEventListener("click", submitCmd);
-    
+
     function submitQuickCmd(cmd) {
         $.post("/server/quickcmd/?id=<?php echo $_GET['id']; ?>", {command: cmd});
     }
