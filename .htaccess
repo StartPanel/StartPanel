@@ -1,0 +1,9 @@
+# Make URL's prettier
+RewriteEngine On
+RewriteRule ^(.*)/$ index.php?path=$1 [L,QSA]
+# Force trailing slash
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*[^/])$ /$1/ [L,R]
+# Error Documents
+ErrorDocument 403 /404/
+ErrorDocument 404 /404/
