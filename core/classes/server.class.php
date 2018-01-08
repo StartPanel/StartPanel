@@ -4,10 +4,7 @@
     * (c) BrightSkyz and SirHyperNova 2018
     * Version 0.1
     */
-    //namespace xPaw;
-    //use xPaw\MinecraftPing;
-	//use xPaw\MinecraftPingException;
-	
+
     include ROOT_PATH . '/core/config.php';
     class Server {
         protected static $sql;
@@ -60,7 +57,7 @@
             $result = $fetch->get_result()->fetch_object();
             return $result->port;
         }
-        
+
         public function setName($id, $name) {
             $set = self::$sql->statements->server->updateName;
             $set->bind_param('si', $name, $id);
@@ -107,25 +104,21 @@
             }
             return $rt;
         }
-        
-        public function isOnline($id) {
-            $Info = false;
-        	$Query = null;
-        	try {
-        		$Query = new MinecraftPing($this->getIP($id), $this->getPort($id), 1);
-        		$Info = $Query->Query();
-        		if($Info === false) {
-        			$Query->Close();
-        			$Query->Connect();
-        			$Info = $Query->QueryOldPre17();
-        		}
-        		return $Info;
-        	} catch (MinecraftPingException $e) {
-        		$Exception = $e;
-        	}
-        	if($Query !== null) {
-        		$Query->Close();
-        	}
+
+		public function isOnline($id) {
+        	$nodeID = $this->getNode($id);
+            $nodeInfo = $this->node->getRow($nodeID);
+            $ssh = new Net_SSH2($nodeInfo->ip, $nodeInfo->port);
+            if (!$ssh->login($nodeInfo->username, $nodeInfo->password)) {
+                die('Login failed.');
+            }
+            $ssh->setTimeout(0.5);
+            $out = $ssh->exec('docker exec server'.$id.' mc_status');
+            if (strpos($out, 'PID')) {
+                return true;
+            } else {
+                return false;
+            }
         }
         public function getStatus($id) {
             $Info = false;
@@ -146,7 +139,7 @@
         		$Query->Close();
         	}
         }
-        
+
         public function createServer($name, $nodeID, $ownerID, $maxRam, $jarFile, $ip, $port) {
             $new = self::$sql->statements->server->new;
             $new->bind_param('siisssi', $name, $nodeID, $ownerID, $maxRam, $jarFile, $ip, $port);
@@ -164,10 +157,9 @@
             $cmd_port = $this->getPort($cmd_serverID);
             $cmd_minRam = $this->settings->getSetting('minRam');
             $cmd_maxRam = $this->getMaxRAM($cmd_serverID);
-            $ssh->exec('mkdir /var/servers/server'.$cmd_serverID);
+            $ssh->exec('mkdir /var/servers/server'.$cmd_serverID.';wget https://s3.amazonaws.com/Minecraft.Download/versions/1.12.2/minecraft_server.1.12.2.jar -O /var/servers/server'.$cmd_serverID.'/spigot.jar');
             //$ssh->exec('docker pull nimmis/spigot');
-            $ssh->exec("docker run -d -p $cmd_port:$cmd_port --name server$cmd_serverID -v /var/servers/server$cmd_serverID:/minecraft -e MC_MINMEM=".$cmd_minRam."m -e MC_MAXMEM=".$cmd_maxRam."m -e EULA=true nimmis/spigot");
-            //$ssh->exec('docker run -d -p 25565:'.$cmd_port.' --name server'.$cmd_serverID.' -v /var/servers/server'.$serverID.':/minecraft -e MC_MINMEM='.$cmd_minRam.'m -e MC_MAXMEM='.$cmd_maxRam.'m -e EULA=true nimmis/spigot');
+            $ssh->exec("docker run -d -p $cmd_port:25565 --name server$cmd_serverID -v /var/servers/server$cmd_serverID:/minecraft -e MC_MINMEM=".$cmd_minRam."m -e MC_MAXMEM=".$cmd_maxRam."m -e EULA=true nimmis/spigot");
             return true;
         }
         public function deleteServer($id) {
