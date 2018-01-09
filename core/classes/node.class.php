@@ -33,7 +33,7 @@
         }
         public function addNode($name, $ip, $port, $username, $password) {
             $new = self::$sql->statements->node->new;
-            $new->bind_param('sssss', $name, $ip, $port, $username, $password);
+            $new->bind_param('sssss', $name, gethostbyname($ip), $port, $username, $password);
             $new->execute();
             return true;
         }
@@ -54,12 +54,6 @@
             }
             return $rt;
         }
-        /*
-        $ssh = new Net_SSH2('dev.sirhypernova.net');
-        if (!$ssh->login("root", "***REMOVED***")) {
-            die('Login failed.');
-        }
-        */
         public function isSshValid($ip, $port, $username, $password) {
             $ssh = new Net_SSH2($ip, $port);
             if (!$ssh->login($username, $password)) {
