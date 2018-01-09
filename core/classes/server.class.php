@@ -112,9 +112,10 @@
             if (!$ssh->login($nodeInfo->username, $nodeInfo->password)) {
                 die('Login failed.');
             }
-            $ssh->setTimeout(0.5);
+            //$ssh->setTimeout(0.5);
             $out = $ssh->exec('docker exec server'.$id.' mc_status');
-            if (strpos($out, 'PID')) {
+            if (strpos($out, "RUNNING") !== false) {
+            //if (true) {
                 return true;
             } else {
                 return false;

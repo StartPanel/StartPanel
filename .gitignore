@@ -1,4 +1,7 @@
+# Cloud9
 /.c9revisions
 /.c9
+# Other
 /core/config.php
 /core/install.lock
+/php.ini
