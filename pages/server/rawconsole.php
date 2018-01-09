@@ -20,12 +20,10 @@
     if ($server->isOnline($_GET['id'])) {
         $nodeID = $server->getNode($_GET['id']);
         $nodeInfo = $node->getRow($nodeID);
-        /*$serverID = $_GET['id'];*/    
         $ssh = new Net_SSH2($nodeInfo->ip, $nodeInfo->port);
         if (!$ssh->login($nodeInfo->username, $nodeInfo->password)) {
             die('Login failed.');
         }
-        //echo nl2br(htmlspecialchars($ssh->exec('docker exec server'.$_GET['id'].' mc_log;\x03')));
         echo nl2br(htmlspecialchars($ssh->exec('docker exec server'.$_GET['id'].' tail -n 50 /minecraft/output.con')));
     } else {
         echo htmlspecialchars('The server is currently offline.');

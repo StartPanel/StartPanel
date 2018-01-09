@@ -15,17 +15,23 @@
         }
     }
     if (isset($_POST['submitPassword'])) {
-        // Check if password meets requirements
-        if (!(preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/', $_POST['password']))) {
-           $error = "Password must have 8 characters minimum, one upper case letter, one lower case letter, and one digit.";
-        } else {
-            if ($_POST['password-new'] === $_POST['password-new2']) {
-                // Change password
-                $user->setValue($_SESSION['id'], 'password', $_POST['password']);
+        // Check if old password is correct
+        if (password_verify($_POST['password-current'], strval($user->getValue($_SESSION['id'],'password')))) {
+            // Check if password meets requirements
+            if (!(preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/', $_POST['password-new']))) {
+               $error = "Password must have a characters minimum, one upper case letter, one lower case letter, and one digit.";
             } else {
-                $error = "Passwords do not match.";
+                if ($_POST['password-new'] === $_POST['password-new2']) {
+                    // Change password
+                    $user->setValue($_SESSION['id'], 'password', password_hash($_POST['password-new'],PASSWORD_DEFAULT));
+                } else {
+                    $error = "Passwords do not match.";
+                }
             }
+        } else {
+            $error = "Your current password is incorrect.";
         }
+        
     }
     $page_name = "Account Settings";
     include ROOT_PATH . '/pages/include/header.php';
