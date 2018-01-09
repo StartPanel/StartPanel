@@ -41,7 +41,7 @@
                     </div>
                     <div class="form-group">
                         <label>Database Password</label>
-                        <input type="text" class="form-control" name="db_pass" placeholder="Database Password">
+                        <input type="password" class="form-control" name="db_pass" placeholder="Database Password">
                     </div>
                     <div class="form-group">
                         <label>Database Name</label>
@@ -62,8 +62,8 @@
     
     echo "Starting import of StartPanelDatabase.sql...<br>";
     
-    $conn = mysqli_connect($mysql_host, $mysql_username, $mysql_password);
-    mysqli_select_db($conn, $mysql_database);
+    $conn = mysqli_connect($mysql_host, $mysql_username, $mysql_password) or die("Invalid MySQL database information.");
+    mysqli_select_db($conn, $mysql_database) or die("Invalid MySQL database name.");
     
     $templine = '';
     $lines = file($filename);
@@ -77,7 +77,7 @@
             $templine = '';
         }
     }
-    echo "Tables imported successfully.<br>";
+    echo "Tables imported successfully.<br><br>";
     echo "You can now login to StartPanel with the following information:<br>
     <strong>Username:</strong> Administrator<br>
     <strong>Password:</strong> password<br>
@@ -86,10 +86,10 @@
 
     file_put_contents(ROOT_PATH . "/core/install.lock", "This file blocks access to the installer.");
     file_put_contents(ROOT_PATH . "/core/config.php", '<?php
-    $db_host = "'.htmlspecialchars($_POST['db_host']).'";
-    $db_user = "'.htmlspecialchars($_POST['db_user']).'";
-    $db_pass = "'.htmlspecialchars($_POST['db_pass']).'";
-    $db_name = "'.htmlspecialchars($_POST['db_name']).'";
+    $db_host = "'.htmlspecialchars($mysql_host).'";
+    $db_user = "'.htmlspecialchars($mysql_username).'";
+    $db_pass = "'.htmlspecialchars($mysql_password).'";
+    $db_name = "'.htmlspecialchars($mysql_database).'";
 ');
 ?>
                     <a class="btn btn-primary" href="/account/login/">Go to login.</a>
