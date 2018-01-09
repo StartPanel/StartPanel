@@ -5,13 +5,11 @@
     * Version 0.1
     */
     session_start();
-    include ROOT_PATH . '/core/config.php';
-    include ROOT_PATH . '/core/classes/minecraftping.class.php';
-    include ROOT_PATH . '/core/classes/settings.class.php';
-    include ROOT_PATH . '/core/classes/user.class.php';
-    include ROOT_PATH . '/core/classes/server.class.php';
-    include ROOT_PATH . '/core/classes/node.class.php';
-    include ROOT_PATH . '/core/classes/sql.class.php';
+    spl_autoload_register(function($class) {
+        if (file_exists(ROOT_PATH . '/core/classes/' . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php'))
+        require_once ROOT_PATH . '/core/classes/' . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+
+    });
     $sql = new SQL($db_host, $db_user, $db_pass, $db_name);
     $user = new User($sql);
     $node = new Node($sql);
