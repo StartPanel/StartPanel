@@ -158,7 +158,7 @@
             $cmd_port = $this->getPort($cmd_serverID);
             $cmd_minRam = $this->settings->getSetting('minRam');
             $cmd_maxRam = $this->getMaxRAM($cmd_serverID);
-            $ssh->exec('mkdir /var/servers/server'.$cmd_serverID.';wget https://s3.amazonaws.com/Minecraft.Download/versions/1.12.2/minecraft_server.1.12.2.jar -O /var/servers/server'.$cmd_serverID.'/spigot.jar');
+            $ssh->exec('mkdir /var/servers/server'.$cmd_serverID.';wget https://s3.amazonaws.com/Minecraft.Download/versions/1.12.2/minecraft_server.1.12.2.jar -O /var/servers/server'.$cmd_serverID.'/spigot-latest.jar');
             //$ssh->exec('docker pull nimmis/spigot');
             $ssh->exec("docker run -d -p $cmd_port:25565 --name server$cmd_serverID -v /var/servers/server$cmd_serverID:/minecraft -e MC_MINMEM=".$cmd_minRam."m -e MC_MAXMEM=".$cmd_maxRam."m -e EULA=true nimmis/spigot");
             return true;
