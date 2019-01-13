@@ -49,23 +49,23 @@
 <?php } ?>
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input required type="text" class="form-control" id="name" name="name" placeholder="Node Name" value="<?php echo $node->getValue($_GET['id'], 'name'); ?>">
+                    <input required type="text" class="form-control" id="name" name="name" placeholder="Node Name" value="">
                 </div>
                 <div class="form-group">
                     <label for="ip">IP</label>
-                    <input required type="text" class="form-control" id="ip" name="ip" placeholder="IP Address" value="<?php echo $node->getValue($_GET['id'], 'ip'); ?>">
+                    <input required type="text" class="form-control" id="ip" name="ip" placeholder="IP Address" value="">
                 </div>
                 <div class="form-group">
                     <label for="port">Port</label>
-                    <input required type="number" class="form-control" id="port" name="port" min="1" max="65535" placeholder="Port for SSH" value="<?php echo $node->getValue($_GET['id'], 'port'); ?>">
+                    <input required type="number" class="form-control" id="port" name="port" min="1" max="65535" placeholder="Port for SSH" value="">
                 </div>
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input required type="text" class="form-control" id="username" name="username" placeholder="Username" value="<?php echo $node->getValue($_GET['id'], 'username'); ?>">
+                    <input required type="text" class="form-control" id="username" name="username" placeholder="Username" value="">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input required type="password" class="form-control" id="password" name="password" placeholder="Password" value="<?php echo $node->getValue($_GET['id'], 'password'); ?>" >
+                    <input required type="password" class="form-control" id="password" name="password" placeholder="Password" value="" >
                 </div>
              </form>
         </div>

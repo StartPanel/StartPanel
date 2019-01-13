@@ -1,4 +1,5 @@
 <?php if (file_exists(ROOT_PATH . "/core/install.lock"))  { die("The installer is blocked by the file /core/install.lock"); } ?>
+<?php if (!isset($_GET['page'])) { $_GET['page'] = ""; } ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,7 +12,7 @@
         <main>
             <br>
             <div class="container">
-                <nav aria-label="breadcrumb">
+                <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item<?php if (!(strlen($_GET['page']) > 0)) {echo ' active';} ?>">Getting Started</li>
                         <li class="breadcrumb-item<?php if ($_GET['page'] == 'db_info') {echo ' active';} ?>">Database Information</li>
@@ -81,6 +82,7 @@
     echo "You can now login to StartPanel with the following information:<br>
     <strong>Username:</strong> Administrator<br>
     <strong>Password:</strong> password<br>
+	<br>
     ";
     
 

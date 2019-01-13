@@ -18,7 +18,7 @@
     } else {
         $page = $_GET['page'];
     }
-    if ($_GET['delete']) {
+    if (isset($_GET['delete'])) {
         if ($node->getValue($_GET['id'],'id')) {
             $node->deleteNode($_GET['delete']);
         }
@@ -64,7 +64,7 @@
         }
         if ($node->getStatus($nodeID)) {
             $nodeStatus = '<span class="badge badge-success">Online</span>';
-            if ($node->isSshValid($nodeIP, $nodePort, $nodeUsername, $nodePassword)) {
+            if (@$node->isSshValid($nodeIP, $nodePort, $nodeUsername, $nodePassword)) {
                 $nodeStatus = '<span class="badge badge-success">Online</span>';
             } else {
                 $nodeStatus = '<span class="badge badge-warning">Invalid SSH Info</span>';
